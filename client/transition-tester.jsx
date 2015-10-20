@@ -31,7 +31,9 @@ const OrgLayout = React.createClass({
     return (
       <div id="org-layout">
         <h2>Org Layout</h2>
-        {this.props.children}
+        <div className="contents">
+          {this.props.children}
+        </div>
       </div>
     );
   }
@@ -84,7 +86,7 @@ App = React.createClass({
       if (which === 'both' && CurrentComponent !== NewComponent) {
         // render the two components side by side
         return (
-          <div class="transitioning">
+          <div className="transitioning">
             <CurrentComponent key="current">{renderListsFrom(index+1, 'current')}</CurrentComponent>
             <NewComponent key="new">{renderListsFrom(index+1, 'new')}</NewComponent>
           </div>

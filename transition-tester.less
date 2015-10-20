@@ -1,0 +1,28 @@
+// super simple reset
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+#org-layout {
+  > h2 {
+    background-color: blue;
+    height: 200px;
+  }
+
+  .contents {
+    position: relative;
+  }
+
+  .transitioning {
+    opacity: 0.5;
+  }
+
+  .transitioning > h1:nth-child(1) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
