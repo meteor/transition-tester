@@ -8,6 +8,7 @@ const Layout = React.createClass({
   render() {
     return (
       <div id="layout">
+        <h2>Galaxy Layout</h2>
         {this.props.children}
       </div>
     );
@@ -18,6 +19,7 @@ const AppLayout = React.createClass({
   render() {
     return (
       <div id="app-layout">
+        <h2>App Layout</h2>
         {this.props.children}
       </div>
     );
@@ -28,6 +30,7 @@ const OrgLayout = React.createClass({
   render() {
     return (
       <div id="org-layout">
+        <h2>Org Layout</h2>
         {this.props.children}
       </div>
     );
@@ -58,49 +61,67 @@ const OrgUserList = React.createClass({
   }
 });
 
-const componentList = new ReactiveVar([Base]);
+const currentList = new ReactiveVar([Base]);
+const newList = new ReactiveVar([Base]);
+const state = new ReactiveVar('atCurrent');
 
 App = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData() {
     return {
-      components: componentList.get()
+      currentList: currentList.get(),
+      newList: newList.get(),
+      state: state.get()
     };
   },
   render() {
-    const components = this.data.components;
-    const renderOnce = (index) => {
-      const Component = components[index];
-      if (index === components.length - 1) {
-        return <Component/>;
+    const {currentList, newList, state} = this.data;
+
+    const renderListsFrom = (index, which) => {
+      const CurrentComponent = currentList[index];
+      const NewComponent = newList[index];
+
+      if (which === 'both' && CurrentComponent !== NewComponent) {
+        // render the two components side by side
+        return (
+          <div class="transitioning">
+            <CurrentComponent key="current">{renderListsFrom(index+1, 'current')}</CurrentComponent>
+            <NewComponent key="new">{renderListsFrom(index+1, 'new')}</NewComponent>
+          </div>
+        );
       } else {
-        return <Component>{renderOnce(index+1)}</Component>;
+        const list = (which === 'new') ? newList : currentList;
+        Component = list[index];
+        if (!Component) {
+          return <div/>;
+        } else {
+          return <Component>{renderListsFrom(index+1, which)}</Component>;
+        }
       }
     }
 
-    return renderOnce(0);
+    return renderListsFrom(0, state === 'transitioning' ? 'both' : 'current');
   }
 });
 
-window.goToBase = () => {
-  componentList.set([Base]);
-};
-
-window.goToLogin = () => {
-  componentList.set([Layout, Login]);
-};
-
-window.goToAppShow = () => {
-  componentList.set([Layout, AppLayout, AppShow]);
-};
-
-window.goToOrgAppList = () => {
-  componentList.set([Layout, OrgLayout, OrgAppList]);
-};
-
-window.goToOrgUserList = () => {
-  componentList.set([Layout, OrgLayout, OrgUserList]);
-};
+_.extend(window, {
+  pages: {
+    Base: [Base],
+    Login: [Layout, Login],
+    AppShow: [Layout, AppLayout, AppShow],
+    OrgUserList: [Layout, OrgLayout, OrgUserList],
+    OrgAppList: [Layout, OrgLayout, OrgAppList]
+  },
+  goToPage(page) {
+    newList.set(page);
+    state.set('transitioning');
+  },
+  finishTransition() {
+    currentList.set(newList.get());
+    newList.set([]);
+    state.set('atCurrent');
+  }
+})
 
 Meteor.startup(function() {
   React.render(<App/>, document.getElementById('render-target'));
