@@ -97,7 +97,11 @@ App = React.createClass({
         if (!Component) {
           return <div/>;
         } else {
-          return <Component>{renderListsFrom(index+1, which)}</Component>;
+          return (
+            <div className="transitioning">
+              <Component>{renderListsFrom(index+1, which)}</Component>
+            </div>
+          );
         }
       }
     }
