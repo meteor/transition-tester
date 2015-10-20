@@ -13,6 +13,7 @@ body,
 #render-target {
   height: 100%;
   text-align: center;
+  background: black;
 }
 
 #loading-layout {
@@ -89,7 +90,10 @@ header {
 
     &.transitioning > * {
       &:first-child { opacity: 0; }
-      &:last-child { opacity: 1; }
+      &:last-child {
+        opacity: 1;
+        .transition(all 5s ease-out 5s);
+      }
     }
   }
 }
