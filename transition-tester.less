@@ -1,15 +1,65 @@
+@import "/lesshat.import.less";
+@import "/helpers.import.less";
+
 // super simple reset
 * {
   margin: 0;
   padding: 0;
+  .box-sizing(border-box);
+}
+
+html,
+body,
+#render-target {
+  height: 100%;
+  text-align: center;
+}
+
+#loading-layout {
+  .position(absolute, 0,0,0,0);
+  background-color: red;
 }
 
 
-#org-layout {
-  > h2 {
-    background-color: blue;
-    height: 200px;
-  }
+#galaxy-layout {
+  .position(absolute, 0,0,0,0);
+  background: #666;
+}
+
+.nav {
+  background: rgba(0,0,0,.3);
+  color: #fff;
+  .position(absolute, 0,0,auto,0, 100%, 3rem);
+  text-align: center;
+  z-index: 2;
+}
+
+header {
+ height: 20vh;
+ padding-top: 6em;
+}
+
+#login-sublayout {
+  .position(absolute, 0,0,0,0);
+  background-color: magenta;
+}
+
+
+#app-sublayout {
+  .position(absolute, 0,0,0,0);
+  background-color: green;
+}
+
+.microlayout {
+  //lives within content
+  .position(absolute, 0,0,0,0);
+}
+
+#org-sublayout {
+  .position(absolute, 0,0,0,0);
+  background-color: purple;
+
+
 
   .contents {
     position: relative;
@@ -24,5 +74,22 @@
     top: 0;
     left: 0;
     right: 0;
+  }
+}
+
+#render-target {
+
+  .transition-wrapper {
+    > * {
+      .transition(all 5s ease-out);
+
+      &:first-child { opacity: 1; }
+      &:last-child { opacity: 0; }
+    }
+
+    &.transitioning > * {
+      &:first-child { opacity: 0; }
+      &:last-child { opacity: 1; }
+    }
   }
 }

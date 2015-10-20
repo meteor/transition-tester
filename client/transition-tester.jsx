@@ -1,14 +1,18 @@
 const Base = React.createClass({
   render() {
-    return <h1>Base</h1>;
+    return (
+      <div id="loading-layout">
+        <header>Loading</header>
+      </div>
+    );
   }
 });
 
 const Layout = React.createClass({
   render() {
     return (
-      <div id="layout">
-        <h2>Galaxy Layout</h2>
+      <div id="galaxy-layout">
+        <div className="nav">Galaxy Layout Nav</div>
         {this.props.children}
       </div>
     );
@@ -18,8 +22,8 @@ const Layout = React.createClass({
 const AppLayout = React.createClass({
   render() {
     return (
-      <div id="app-layout">
-        <h2>App Layout</h2>
+      <div id="app-sublayout">
+        <header>App Layout</header>
         {this.props.children}
       </div>
     );
@@ -29,8 +33,8 @@ const AppLayout = React.createClass({
 const OrgLayout = React.createClass({
   render() {
     return (
-      <div id="org-layout">
-        <h2>Org Layout</h2>
+      <div id="org-sublayout">
+        <header>Org Layout</header>
         <div className="contents">
           {this.props.children}
         </div>
@@ -41,7 +45,11 @@ const OrgLayout = React.createClass({
 
 const Login = React.createClass({
   render() {
-    return <h1>Login</h1>;
+    return (
+      <div id="login-sublayout">
+        <header>Login</header>
+      </div>
+    );
   }
 });
 
@@ -53,13 +61,13 @@ const AppShow = React.createClass({
 
 const OrgAppList = React.createClass({
   render() {
-    return <h1>OrgAppList</h1>;
+    return <div className="microlayout">OrgAppList</div>;
   }
 });
 
 const OrgUserList = React.createClass({
   render() {
-    return <h1>OrgUserList</h1>;
+    return <div className="microlayout">OrgUserList</div>;
   }
 });
 
@@ -86,7 +94,7 @@ App = React.createClass({
       if (which === 'both' && CurrentComponent !== NewComponent) {
         // render the two components side by side
         return (
-          <div className="transitioning">
+          <div className="transitioning transition-wrapper">
             <CurrentComponent key="current">{renderListsFrom(index+1, 'current')}</CurrentComponent>
             <NewComponent key="new">{renderListsFrom(index+1, 'new')}</NewComponent>
           </div>
